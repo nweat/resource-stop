@@ -4,7 +4,7 @@ require('./models/Posts');
 require('./models/Comments');
 require('./models/Users');
 require('./config/passport');
-mongoose.connect('mongodb://127.0.0.1/news');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://127.0.0.1/news');
 
 var express = require('express');
 var path = require('path');
