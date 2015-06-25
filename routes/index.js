@@ -255,12 +255,23 @@ router.post('/login', function(req, res, next){
   })(req, res, next);
 });
 
+router.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }),
+  function(req,res){
+  console.log(req);
+  });
 
-
+router.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    console.log('results: ' +res);
+    res.redirect('/');
+  });
 
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  //console.log(req.user);
   res.render('index', { title: 'Express' });
 });
 
