@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Nikki's Resource Stop</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
     <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog.css">
     <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog-theme-default.css">
@@ -190,7 +191,7 @@ padding-right:10px;
  <div class="collapse navbar-collapse" id="navbar-main">
 
       <ul class="nav navbar-nav navbar-right" ng-controller="NavCtrl">
-      <li ng-show="isLoggedIn()"><a href=""><b>Welcome, {{currentUser() }}</b></a></li>
+      <li ng-show="isLoggedIn()"><a href=""><b>Welcome, {{currentUser()}} <img ng-src={{googleImage()}} width="25px;" height:"20px;"/> </b></b></a></li>
       <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()"><b>Log Out</b></a></li>
       <li ng-hide="isLoggedIn()"><a href="/#/login"><b>Log In</b></a></li>
       <li ng-hide="isLoggedIn()"><a href="/#/register"><b>Register</b></a></li>
@@ -250,14 +251,12 @@ padding-right:10px;
 
 <div class="transparent-background-inner">
   
-<a href="auth/google">Sign In with Google</a>
-  
-  <div ng-show="error" class="alert-danger-custom">
+   <div ng-show="error" class="alert-danger-custom">
     <span >{{ error.message }}</span>
   </div>
 
   <form ng-submit="logIn()">
-    <h3>Log In</h3>
+    <h3>Log in</h3>
 
     <div class="form-group">
       <input type="text"
@@ -272,6 +271,7 @@ padding-right:10px;
       ng-model="user.password" required></input>
     </div>
     <button type="submit" class="btn btn-primary">Log In</button>
+    <a href="auth/google" class="btn btn-danger" style="float:right;"><span class="fa fa-google-plus"></span> Sign in with Google</a>
   </form>
   </div>
   </script>
@@ -303,7 +303,7 @@ padding-right:10px;
 </ul>
 
 <div ng-hide="isLoggedIn()">
-<h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</h3>
+<h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a resource</h3>
 </div>
 </script>
 <!--=====================================================================================================NEW POST-->

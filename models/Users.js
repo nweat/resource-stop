@@ -3,23 +3,32 @@ var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
 var UserSchema = new mongoose.Schema({
+  local:{
   username: {type: String, lowercase: true, unique: true},
   hash: String,
   salt: String
+  },
+  google : {
+  id     : String,
+  token  : String,
+  email  : String,
+  name   : String
+  },
+
 });
 
 
 UserSchema.methods.setPassword = function(password){
-  this.salt = crypto.randomBytes(16).toString('hex');
+  this.local.salt = crypto.randomBytes(16).toString('hex');
 
-  this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+  this.local.hash = crypto.pbkdf2Sync(password, this.local.salt, 1000, 64).toString('hex');
 };
 
 
 UserSchema.methods.validPassword = function(password) {
-  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+  var hash = crypto.pbkdf2Sync(password, this.local.salt, 1000, 64).toString('hex');
 
-  return this.hash === hash;
+  return this.local.hash === hash;
 };
 
 /*
@@ -40,8 +49,8 @@ UserSchema.methods.generateJWT = function() { //generate a JWT token for the use
   exp.setDate(today.getDate() + 60);
 
   return jwt.sign({
-    _id: this._id,
-    username: this.username,
+    _id: this.local._id,
+    username: this.local.username,
     exp: parseInt(exp.getTime() / 1000),
   }, 'SECRET');
 };

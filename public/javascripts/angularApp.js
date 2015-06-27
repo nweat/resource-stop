@@ -11,12 +11,11 @@ function($stateProvider, $urlRouterProvider) {
       templateUrl: '/home.html',
       controller: 'MainCtrl',
        resolve: { //call function when appropriate, call here on resolve
-    postPromise: ['posts', function(posts){ //pass posts service
+    postPromise: ['posts','auth', function(posts,auth){ //pass posts service
+      auth.isGoogleUser(); //if user has logged in with google, set the local storage with google profile details
       return posts.getAll();
     }]
-  }
-    }).
-    
+  }}).    
     
     /*
      * 
@@ -71,7 +70,14 @@ auth.getToken = function (){
   return $window.localStorage['flapper-news-token'];
 };
 
-
+//logged in with google
+auth.isGoogleUser = function(){ //redirect to home and get googleuser details to show in nav ctrl
+ $http.get('googleuser').success(function(data){
+  if(data.token){
+   $window.localStorage['flapper-news-token'] = data.token;
+  }
+  });
+};
 
 /*
  * 
@@ -103,6 +109,17 @@ auth.currentUser = function(){
   }
 };
 
+auth.currentUserImage = function(){
+  if(auth.isLoggedIn()){
+    var token = auth.getToken();
+    var payload = JSON.parse($window.atob(token.split('.')[1]));
+
+if(payload.image){
+   return payload.image;
+}
+  }
+};
+
 
 auth.register = function(user){
   return $http.post('/register', user).success(function(data){
@@ -118,10 +135,12 @@ auth.logIn = function(user){
 };
 
 
-auth.logOut = function(){
+auth.logOut = function(){ //call server side as well if using google
+   $http.get('logout').success(function(){ 
+    $window.localStorage.removeItem('flapper-news-token');
+  });
   $window.localStorage.removeItem('flapper-news-token');
 };
-
 
   return auth;
 }]);
@@ -226,6 +245,7 @@ function($scope, auth){
   $scope.isLoggedIn = auth.isLoggedIn;
   $scope.currentUser = auth.currentUser;
   $scope.logOut = auth.logOut;
+  $scope.googleImage =  auth.currentUserImage;
 }]);
 
 
@@ -270,7 +290,7 @@ function($scope, $state, auth, $location){
 app.controller('MainCtrl', ['$scope', 'posts', 'auth','ngDialog', function($scope, posts, auth, ngDialog){  //inject posts service
   $scope.posts = posts.posts; //access posts array from o object in posts service
   $scope.isLoggedIn = auth.isLoggedIn;
-  var allowed = 'nikki';
+  var allowed = 'Nikki w';
 //console.log(posts.posts);
 
 

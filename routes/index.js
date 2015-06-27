@@ -1,12 +1,13 @@
 var mongoose=require('mongoose');
 var passport = require('passport');
 var express = require('express');
-var jwt = require('express-jwt');
+var jwt = require('jsonwebtoken');
+var jwtt = require('express-jwt');
 
 var Post = mongoose.model('Post');
 var Comment = mongoose.model('Comment');
 var User = mongoose.model('User');
-var auth = jwt({secret: 'SECRET', userProperty: 'payload'}); //middleware for authenticating users
+var auth = jwtt({secret: 'SECRET', userProperty: 'payload'}); //middleware for authenticating users
 /*
  * The userPropery option specifies which property on req to put our payload from our tokens.
  *  By default it's set on user but we're using payload instead to avoid any conflicts with passport 
@@ -204,11 +205,11 @@ router.post('/register', function(req, res, next){
 
   var user = new User();
 
-  user.username = req.body.username;
+  user.local.username = req.body.username;
 
   user.setPassword(req.body.password);
 
-  User.count({username: req.body.username}, function(err, count){ //check if user already exists
+  User.count({'local.username': req.body.username}, function(err, count){ //check if user already exists
     if(err){ return next(err); }
 
     if(count == 0){ //if username doesnt already exist then save it
@@ -222,11 +223,7 @@ router.post('/register', function(req, res, next){
       return res.status(400).json({message: 'Username already exists'});
     }
    
-  })
-
- 
-
- 
+  }) 
 });
 
 
@@ -255,24 +252,72 @@ router.post('/login', function(req, res, next){
   })(req, res, next);
 });
 
-router.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }),
-  function(req,res){
-  console.log(req);
-  });
+
+
+
+router.get('/auth/google', passport.authenticate('google', { scope: [
+       'https://www.googleapis.com/auth/plus.login',
+       'https://www.googleapis.com/auth/plus.profile.emails.read'] 
+}));
+
 
 router.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    // Successful authentication, redirect home.
-    console.log('results: ' +res);
-    res.redirect('/');
+    // Successful authentication, redirect to index.ejs.
+  res.redirect('/');
   });
+
+
+
+ router.get('/googleuser',function(req,res,next){
+ // console.log('results: ' + req.user.displayName+ req.user._json.image.url);
+
+  if(req.user){
+   return res.json({token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url)});
+  }
+  else{
+   return res.json({token: false});
+  }
+
+ });
+
+
+ router.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+ });
 
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  //console.log(req.user);
-  res.render('index', { title: 'Express' });
+  res.render('index', { token: 'test'});
 });
+
+
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+}
+
+function setjwtGoogle(id,username,image){
+  var today = new Date();
+  var exp = new Date(today);
+  exp.setDate(today.getDate() + 60);
+
+  return jwt.sign({
+    _id: id,
+    username: username,
+    image:image,
+    exp: parseInt(exp.getTime() / 1000),
+  }, 'SECRET');
+}
+
 
 module.exports = router;
