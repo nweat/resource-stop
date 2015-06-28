@@ -12,6 +12,7 @@ function($stateProvider, $urlRouterProvider) {
       controller: 'MainCtrl',
        resolve: { //call function when appropriate, call here on resolve
     postPromise: ['posts','auth', function(posts,auth){ //pass posts service
+      auth.isGoogleUser(); 
      //if user has logged in with google, set the local storage with google profile details
       return posts.getAll();
     }]
