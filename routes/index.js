@@ -285,6 +285,7 @@ router.get('/auth/google/callback',
 
  router.get('/logout', function(req, res) {
         req.logout();
+        res.status(200);
         res.redirect('/');
  });
 

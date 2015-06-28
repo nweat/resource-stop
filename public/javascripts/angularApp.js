@@ -141,7 +141,7 @@ auth.logOut = function(){ //call server side as well if using google
    $http.get('logout').success(function(){ 
     $window.localStorage.removeItem('flapper-news-token');
   });
-  $window.localStorage.removeItem('flapper-news-token');
+ // $window.localStorage.removeItem('flapper-news-token');
 };
 
   return auth;
