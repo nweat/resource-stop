@@ -273,11 +273,11 @@ router.get('/auth/google/callback',
  router.get('/googleuser',function(req,res,next){
  // console.log('results: ' + req.user.displayName+ req.user._json.image.url);
 
-  if(req.user){
-   return res.json({token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url)});
+  if(req.user != undefined){
+   return res.status(200).json({token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url)});
   }
   else{
-   return res.json({token: false});
+   return res.status(200).json({token: false});
   }
 
  });
