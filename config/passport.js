@@ -59,7 +59,7 @@ passport.use(new GoogleStrategy({ //define Google strategy
   clientID: '591455568599-i2dotrcqunl8l1r51robprf7r5d6bhmv.apps.googleusercontent.com',
   clientSecret: 'eyjl4uRVVREM7IlHzvjOPfov',
   callbackURL: "https://nikki-resource-stop.herokuapp.com/auth/google/callback"
-   // returnURL: 'http://192.168.1.56:3000/auth/google/return',
+   // https://nikki-resource-stop.herokuapp.com/auth/google/callback
     //realm: 'http://192.168.1.56:3000/'
   },
  function(token, refreshToken, profile, done) {

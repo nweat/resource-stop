@@ -210,7 +210,7 @@ router.post('/register', function(req, res, next){
   user.setPassword(req.body.password);
 
   User.count({'local.username': req.body.username}, function(err, count){ //check if user already exists
-    if(err){ return next(err); }
+    if(err){ console.log('err '+ err); }
 
     if(count == 0){ //if username doesnt already exist then save it
     user.save(function (err){
@@ -220,7 +220,7 @@ router.post('/register', function(req, res, next){
   });
     }
    else{
-      return res.status(400).json({message: 'Username already exists'});
+    return res.status(400).json({message: 'Username already exists'});
     }
    
   }) 
@@ -256,8 +256,7 @@ router.post('/login', function(req, res, next){
 
 
 router.get('/auth/google', passport.authenticate('google', { scope: [
-       'https://www.googleapis.com/auth/plus.login',
-       'https://www.googleapis.com/auth/plus.profile.emails.read'] 
+       'https://www.googleapis.com/auth/plus.login'] 
 }));
 
 
@@ -273,7 +272,7 @@ router.get('/auth/google/callback',
  router.get('/googleuser',function(req,res,next){
  // console.log('results: ' + req.user.displayName+ req.user._json.image.url);
 
-  if(req.user != undefined){
+  if(req.user){
    return res.status(200).json({token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url)});
   }
   else{
@@ -285,14 +284,22 @@ router.get('/auth/google/callback',
 
  router.get('/logout', function(req, res) {
         req.logout();
-        res.status(200);
         res.redirect('/');
  });
 
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { token: 'test'});
+   var googletoken = '';
+
+  if(req.user){
+    res.render('index', { user: req.user, token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url) })
+    }
+  else{
+    res.render('index', { user: false, token: false});
+  }
+
+  
 });
 
 

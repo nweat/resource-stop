@@ -12,12 +12,12 @@ function($stateProvider, $urlRouterProvider) {
       controller: 'MainCtrl',
        resolve: { //call function when appropriate, call here on resolve
     postPromise: ['posts','auth', function(posts,auth){ //pass posts service
-      auth.isGoogleUser(); 
+     // auth.isGoogleUser(); 
      //if user has logged in with google, set the local storage with google profile details
       return posts.getAll();
     }]
   }, onEnter: ['auth', function(auth){
-      auth.isGoogleUser(); 
+      //auth.isGoogleUser(); 
   }]}).    
     
     /*
@@ -139,10 +139,8 @@ auth.logIn = function(user){
 
 
 auth.logOut = function(){ //call server side as well if using google
-   $http.get('logout').success(function(){ 
-    $window.localStorage.removeItem('flapper-news-token');
-  });
- // $window.localStorage.removeItem('flapper-news-token');
+  // $http.get('/logout');
+   $window.localStorage.removeItem('flapper-news-token');
 };
 
   return auth;
@@ -165,23 +163,39 @@ o.getAll = function() { //get posts
       angular.copy(data, o.posts); //copy returned results to posts object defined above, angular copy will make UI update properly when getAll function is called
     });
 };
+
+//GOOGLE OR LOCAL USER
+o.checkToken = function(token){
+   var _token = '';
+
+  if(token != 'null'){
+    _token = token;
+  }else{
+    _token = auth.getToken();
+  }
+
+  return _token;
+}
   
-o.create = function(post) {
-  return $http.post('/posts', post, {headers: {Authorization: 'Bearer '+auth.getToken()} 
+o.create = function(post, googleToken) {
+  return $http.post('/posts', post, {headers: {Authorization: 'Bearer '+o.checkToken(googleToken)} 
   }).success(function(data){
     o.posts.push(data);
   });
 };
 
-o.update = function(post) {
-  return $http.put('/posts/' + post._id + '/update', post, {headers: {Authorization: 'Bearer '+auth.getToken()} 
+
+o.update = function(post, googleToken) {
+  return $http.put('/posts/' + post._id + '/update', post, {headers: {Authorization: 'Bearer '+o.checkToken(googleToken)} 
   }).success(function(data){
    // o.posts.push(data);
   }); //when this function is called, check if success or error then output message to user
 };
 
-o.delete = function(post){
-   return $http.put('/posts/' + post._id + '/delete',null, {headers: {Authorization: 'Bearer '+auth.getToken()} 
+
+
+o.delete = function(post,googleToken){
+   return $http.put('/posts/' + post._id + '/delete',null, {headers: {Authorization: 'Bearer '+ o.checkToken(googleToken)} 
   }).success(function(data){
    o.posts.forEach(function(element, index, array){
     if(element._id === data.post){
@@ -189,14 +203,12 @@ o.delete = function(post){
      //console.log(element._id +' '+ index +' '+element.title + ' data:'+ data.post);
    }
    })
-   
   });
 }
 
-
-o.upvote = function(post) {
+o.upvote = function(post,googleToken) {
   return $http.put('/posts/' + post._id + '/upvote', null, {
-    headers: {Authorization: 'Bearer '+auth.getToken()}
+    headers: {Authorization: 'Bearer '+ o.checkToken(googleToken)}
   }).success(function(data){
     post.upvotes += 1; //access post object and increment it by 1
   });
@@ -297,18 +309,17 @@ app.controller('MainCtrl', ['$scope', 'posts', 'auth','ngDialog', function($scop
 //console.log(posts.posts);
 
 
-$scope.modal = function(post){
+$scope.modal = function(user,post){
 var restrict = "";
 
 if(post){
   $scope.post = post;
-  //console.log(post._id);
 }
-//console.log(post);
+//console.log('USER: '+ user);
 
-  if(auth.currentUser()===allowed && !post){ //only I can add resources currently
+  if(user === allowed && !post){ //only I can add resources currently, only checks google user currently
     restrict = 'newPost.html'
-  }else if(auth.currentUser()===allowed && post){
+  }else if(user === allowed && post){
     restrict = 'editPost.html'
   }else{
     restrict = 'restricted.html'
@@ -329,21 +340,23 @@ if(post){
                 });
 },
 
-$scope.editPost = function(post){
+$scope.editPost = function(post,tok){
 if(!post.title || post.title===''){return;}
- posts.update(post).success(function(stat){
+ posts.update(post,tok).success(function(stat){
   $scope.status = stat;
  });
 },
 
-  $scope.addPost = function(){
+  $scope.addPost = function(tok){
+   //$scope.title=user;
+
    if(!$scope.title || $scope.title===''){return;}
     posts.create({
     title: $scope.title, //access fields through scope variable
     link: $scope.link,
     info: $scope.info,
     category:$scope.category
-    }).error(function(err){
+    },tok).error(function(err){
       $scope.status = err;
     }).success(function(){
       $scope.title='';
@@ -355,15 +368,16 @@ if(!post.title || post.title===''){return;}
 
   },
 
-  $scope.delete = function(post){
-     if(auth.currentUser()===allowed)
+  $scope.delete = function(post,user,tok){
+     if(user === allowed)
      if (confirm("Are you sure?")) {
-         posts.delete(post);
+         posts.delete(post,tok);
     } 
   }
 
-  $scope.incrementUpvotes = function(post){
-  posts.upvote(post); //call posts service function (upvote) and pass parameter post object, then can access post._id
+  $scope.incrementUpvotes = function(post,tok){
+    //console.log('Google token: '+ tok + '   local: '+auth.getToken());
+    posts.upvote(post,tok); //call posts service function (upvote) and pass parameter post object, then can access post._id
  } 
 }]);
 
