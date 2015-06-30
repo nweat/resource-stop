@@ -75,7 +75,13 @@ auth.getToken = function (){
 };
 
 auth.getGoogleToken = function (){
-  return $window.localStorage['google-token'] || false;
+  var token = $window.localStorage['google-token'];
+
+  if(token){
+    return true
+  } else {
+    return false;
+  }
 };
 //logged in with google
 auth.isGoogleUser = function(){ //redirect to home and get googleuser details to show in nav ctrl
