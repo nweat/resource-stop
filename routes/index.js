@@ -256,7 +256,7 @@ router.post('/login', function(req, res, next){
 
 
 router.get('/auth/google', passport.authenticate('google', { scope: [
-       'https://www.googleapis.com/auth/plus.login'], prompt: 'select_account+consent'
+       'https://www.googleapis.com/auth/plus.login'], prompt: 'select_account'
 }));
 
 
