@@ -76,7 +76,7 @@ auth.getToken = function (){
 
 auth.getGoogleToken = function (){
   var token = $window.localStorage['google-token'];
-
+console.log('token: '+token);
   if(token){
     return true
   } else {
