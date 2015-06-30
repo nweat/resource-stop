@@ -17,7 +17,8 @@ function($stateProvider, $urlRouterProvider) {
       return posts.getAll();
     }]
   }, onEnter: ['auth', function(auth){
-      //auth.isGoogleUser(); 
+      auth.isGoogleUser(); 
+
   }]}).    
     
     /*
@@ -77,13 +78,16 @@ auth.getGoogleToken = function (){
   return $window.localStorage['google-token'] || false;
 };
 //logged in with google
-/*auth.isGoogleUser = function(){ //redirect to home and get googleuser details to show in nav ctrl
- $http.get('googleuser').success(function(data){
+auth.isGoogleUser = function(){ //redirect to home and get googleuser details to show in nav ctrl
+ $http.get('/googleuser').success(function(data){
   if(data.token != false){
-   auth.saveToken(data.token);
+     if(!$window.localStorage['google-token'])
+  {
+    $window.localStorage['google-token'] = data.token;
+  }
   }
   });
-};*/
+};
 
 /*
  * 
@@ -157,7 +161,7 @@ auth.logOut = function(){ //call server side as well if using google
  * let's update our posts service to send the JWT token to the server on authenticated requests.
  *  
  * */
-app.factory('posts', ['$http', 'auth', function($http,auth){
+app.factory('posts', ['$http', 'auth', '$window', function($http,auth,$window){
 var o = {
  posts:[{}]
 };
@@ -174,10 +178,6 @@ o.checkToken = function(token){
 
   if(token != 'null'){
     _token = token;
-  if(!$window.localStorage['google-token'])
-  {
-    $window.localStorage['google-token'] = token;
-  }
   }else{
     _token = auth.getToken();
   }
