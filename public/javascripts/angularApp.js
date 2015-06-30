@@ -86,11 +86,11 @@ auth.getGoogleToken = function (){
 //logged in with google
 auth.isGoogleUser = function(){ //redirect to home and get googleuser details to show in nav ctrl
  $http.get('/googleuser').success(function(data){
-  if(data.token != false){
-     if(!$window.localStorage['google-token'])
-  {
+  if(data.token){
+    // if(!$window.localStorage['google-token'])
+ // {
     $window.localStorage['google-token'] = data.token;
-  }
+  //}
   }
   });
 };
