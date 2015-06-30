@@ -17,7 +17,7 @@ function($stateProvider, $urlRouterProvider) {
       return posts.getAll();
     }]
   }, onEnter: ['auth', function(auth){
-      auth.isGoogleUser(); 
+      //auth.isGoogleUser(); 
 
   }]}).    
     
@@ -42,7 +42,7 @@ function($stateProvider, $urlRouterProvider) {
   templateUrl: '/login.html',
   controller: 'AuthCtrl',
   onEnter: ['$state', 'auth', function($state, auth){
-    if(auth.isLoggedIn() || auth.getGoogleToken()){
+    if(auth.isLoggedIn()){
       $state.go('home');
     }
   }]
@@ -85,7 +85,7 @@ console.log('token: '+token);
 };
 //logged in with google
 auth.isGoogleUser = function(){ //redirect to home and get googleuser details to show in nav ctrl
- $http.get('/googleuser').success(function(data){
+ $http.get('googleuser').success(function(data){
   if(data.token){
     // if(!$window.localStorage['google-token'])
  // {
@@ -104,8 +104,13 @@ auth.isGoogleUser = function(){ //redirect to home and get googleuser details to
  * javascript object with JSON.parse.
  *  
  **/
-auth.isLoggedIn = function(){
+auth.isLoggedIn = function(user=null){
   var token = auth.getToken();
+
+if(user!=null){
+ return true;
+}
+
 
   if(token){
     var payload = JSON.parse($window.atob(token.split('.')[1]));
@@ -122,17 +127,6 @@ auth.currentUser = function(){
     var payload = JSON.parse($window.atob(token.split('.')[1]));
 
     return payload.username;
-  }
-};
-
-auth.currentUserImage = function(){
-  if(auth.isLoggedIn()){
-    var token = auth.getToken();
-    var payload = JSON.parse($window.atob(token.split('.')[1]));
-
-if(payload.image){
-   return payload.image;
-}
   }
 };
 
@@ -274,7 +268,6 @@ function($scope, auth){
   $scope.isLoggedIn = auth.isLoggedIn;
   $scope.currentUser = auth.currentUser;
   $scope.logOut = auth.logOut;
-  $scope.googleImage =  auth.currentUserImage;
 }]);
 
 
