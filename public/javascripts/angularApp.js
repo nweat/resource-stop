@@ -12,13 +12,12 @@ function($stateProvider, $urlRouterProvider) {
       controller: 'MainCtrl',
        resolve: { //call function when appropriate, call here on resolve
     postPromise: ['posts','auth', function(posts,auth){ //pass posts service
-     // auth.isGoogleUser(); 
-     //if user has logged in with google, set the local storage with google profile details
+       auth.isGoogleUser();
+         //if user has logged in with google, set the local storage with google profile details
       return posts.getAll();
     }]
   }, onEnter: ['auth', function(auth){
-      //auth.isGoogleUser(); 
-
+     
   }]}).    
     
     /*
@@ -42,7 +41,8 @@ function($stateProvider, $urlRouterProvider) {
   templateUrl: '/login.html',
   controller: 'AuthCtrl',
   onEnter: ['$state', 'auth', function($state, auth){
-    if(auth.isLoggedIn()){
+//console.log('auth: '+ auth.getGoogleUser() )
+    if(auth.isLoggedIn() || auth.getGoogleUser()){
       $state.go('home');
     }
   }]
@@ -52,7 +52,7 @@ function($stateProvider, $urlRouterProvider) {
   templateUrl: '/register.html',
   controller: 'AuthCtrl',
   onEnter: ['$state', 'auth', function($state, auth){
-    if(auth.isLoggedIn()){
+    if(auth.isLoggedIn() || auth.getGoogleUser()){
       $state.go('home');
     }
   }]
@@ -64,7 +64,9 @@ function($stateProvider, $urlRouterProvider) {
 
 
 app.factory('auth', ['$http', '$window', function($http, $window){
-var auth = {};
+var auth = {
+  user:false
+};
 
 auth.saveToken = function (token){
   $window.localStorage['flapper-news-token'] = token;
@@ -74,27 +76,16 @@ auth.getToken = function (){
   return $window.localStorage['flapper-news-token'];
 };
 
-auth.getGoogleToken = function (){
-  var token = $window.localStorage['google-token'];
-console.log('token: '+token);
-  if(token){
-    return true
-  } else {
-    return false;
-  }
-};
 //logged in with google
 auth.isGoogleUser = function(){ //redirect to home and get googleuser details to show in nav ctrl
- $http.get('googleuser').success(function(data){
-  if(data.token){
-    // if(!$window.localStorage['google-token'])
- // {
-    $window.localStorage['google-token'] = data.token;
-  //}
-  }
+  $http.get('/googleuser').success(function(data){
+   auth.user = data.user;
   });
 };
 
+auth.getGoogleUser = function(){
+  return auth.user;
+}
 /*
  * 
  * If a token exists, we'll need to check the payload to see if the token has expired, 
@@ -104,15 +95,8 @@ auth.isGoogleUser = function(){ //redirect to home and get googleuser details to
  * javascript object with JSON.parse.
  *  
  **/
-auth.isLoggedIn = function(user){
+auth.isLoggedIn = function(){
   var token = auth.getToken();
-
-if(user != null){
- return true;
-}else{
-  return false;
-}
-
 
   if(token){
     var payload = JSON.parse($window.atob(token.split('.')[1]));
@@ -122,6 +106,7 @@ if(user != null){
     return false;
   }
 };
+
 
 auth.currentUser = function(){
   if(auth.isLoggedIn()){
@@ -150,7 +135,6 @@ auth.logIn = function(user){
 auth.logOut = function(){ //call server side as well if using google
   // $http.get('/logout');
    $window.localStorage.removeItem('flapper-news-token');
-   $window.localStorage.removeItem('google-token');
 };
 
   return auth;
@@ -176,7 +160,7 @@ o.getAll = function() { //get posts
 
 //GOOGLE OR LOCAL USER
 o.checkToken = function(token){
-   var _token = '';
+  var _token = '';
 
   if(token != 'null'){
     _token = token;

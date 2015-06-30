@@ -269,17 +269,17 @@ router.get('/auth/google/callback',
 
 
 
- /*router.get('/googleuser',function(req,res,next){
+ router.get('/googleuser',function(req,res,next){
  // console.log('results: ' + req.user.displayName+ req.user._json.image.url);
 
   if(req.user){
-   return res.status(200).json({token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url)});
+   return res.status(200).json({user: true});// res.status(200).json({token: true});
   }
   else{
-   return res.status(200).json({token: false});
+   return res.status(401).json({user: false});
   }
 
- });*/
+ });
 
 
  router.get('/logout', function(req, res) {

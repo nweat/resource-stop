@@ -194,8 +194,6 @@ padding-right:10px;
        <li  
        <% if (user) { %>
         ng-show='true';
-        googleuser='<%- user.displayName %>';
-        ng-init = "isLoggedIn(googleuser)";
        <% } %>  
         ng-show="isLoggedIn()"><a href=""><b>
          <% if (user) { %>

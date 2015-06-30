@@ -60,7 +60,7 @@ passport.use(new GoogleStrategy({ //define Google strategy
   clientSecret: 'eyjl4uRVVREM7IlHzvjOPfov',
   callbackURL: "https://nikki-resource-stop.herokuapp.com/auth/google/callback"
    // https://nikki-resource-stop.herokuapp.com/auth/google/callback
-    //realm: 'http://192.168.1.56:3000/'
+    //realm: 'http://localhost:3000/'
   },
  function(token, refreshToken, profile, done) {
     // asynchronous verification, for effect...
