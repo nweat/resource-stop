@@ -107,8 +107,10 @@ auth.isGoogleUser = function(){ //redirect to home and get googleuser details to
 auth.isLoggedIn = function(user){
   var token = auth.getToken();
 
-if(user!=null){
+if(user != null){
  return true;
+}else{
+  return false;
 }
 
 
