@@ -269,7 +269,7 @@ router.get('/auth/google/callback',
 
 
 
- router.get('/googleuser',function(req,res,next){
+ /*router.get('/googleuser',function(req,res,next){
  // console.log('results: ' + req.user.displayName+ req.user._json.image.url);
 
   if(req.user){
@@ -279,7 +279,7 @@ router.get('/auth/google/callback',
    return res.status(200).json({token: false});
   }
 
- });
+ });*/
 
 
  router.get('/logout', function(req, res) {

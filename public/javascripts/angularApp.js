@@ -41,7 +41,7 @@ function($stateProvider, $urlRouterProvider) {
   templateUrl: '/login.html',
   controller: 'AuthCtrl',
   onEnter: ['$state', 'auth', function($state, auth){
-    if(auth.isLoggedIn()){
+    if(auth.isLoggedIn() || auth.getGoogleToken()){
       $state.go('home');
     }
   }]
@@ -73,14 +73,17 @@ auth.getToken = function (){
   return $window.localStorage['flapper-news-token'];
 };
 
+auth.getGoogleToken = function (){
+  return $window.localStorage['google-token'] || false;
+};
 //logged in with google
-auth.isGoogleUser = function(){ //redirect to home and get googleuser details to show in nav ctrl
+/*auth.isGoogleUser = function(){ //redirect to home and get googleuser details to show in nav ctrl
  $http.get('googleuser').success(function(data){
   if(data.token != false){
    auth.saveToken(data.token);
   }
   });
-};
+};*/
 
 /*
  * 
@@ -141,6 +144,7 @@ auth.logIn = function(user){
 auth.logOut = function(){ //call server side as well if using google
   // $http.get('/logout');
    $window.localStorage.removeItem('flapper-news-token');
+   $window.localStorage.removeItem('google-token');
 };
 
   return auth;
@@ -170,6 +174,10 @@ o.checkToken = function(token){
 
   if(token != 'null'){
     _token = token;
+  if(!$window.localStorage['google-token'])
+  {
+    $window.localStorage['google-token'] = token;
+  }
   }else{
     _token = auth.getToken();
   }
