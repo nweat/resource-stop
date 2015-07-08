@@ -278,20 +278,14 @@ router.get('/auth/google/callback',
     // Successful authentication, redirect to index.ejs.
  // res.redirect('/');
  // });
- passport.authenticate('google',{ failureRedirect: '/login' },function(err, user, info) {
-        if(err) {
-            return next(err);
-        }
-        if(!user) {
-            return res.redirect('/login');
-        }
-
+ passport.authenticate('google',{ failureRedirect: '/login' },function(req, res) {
+  
         res.writeHead(302, {
-                'Location': 'https://nikki-resource-stop.herokuapp.com/#/home?token=' + user.displayName
+                'Location': 'https://nikki-resource-stop.herokuapp.com/#/home?token=' + req.user.displayName
             });
         res.end();
   
-    })(req,res,next);
+    });
 
 
  router.get('/googleuser',function(req,res,next){
