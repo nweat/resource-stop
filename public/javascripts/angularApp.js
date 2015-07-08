@@ -81,6 +81,8 @@ auth.isGoogleUser = function(){ //redirect to home and get googleuser details to
   $http.get('/googleuser').success(function(data){
     console.log(data.user);
    auth.user = data.user;
+  }).error(function(err){
+    console.log(err);
   });
 };
 

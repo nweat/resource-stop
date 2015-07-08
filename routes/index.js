@@ -261,11 +261,11 @@ router.get('/auth/google', passport.authenticate('google', { scope: [
 
 
 router.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
+  passport.authenticate('google', { successRedirect: '/',failureRedirect: '/login' }));
+  //function(req, res) {
     // Successful authentication, redirect to index.ejs.
-  res.redirect('/');
-  });
+ // res.redirect('/');
+ // });
 
 
 
@@ -298,7 +298,7 @@ router.get('/', function(req, res, next) {
     res.render('index', { user: req.user, token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url) })
     }
   else{
-    res.render('index', { user: false, token: false});
+    res.render('index', { title:'Express');
   }
 
   
