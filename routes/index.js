@@ -298,7 +298,7 @@ router.get('/', function(req, res, next) {
     res.render('index', { user: req.user, token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url) })
     }
   else{
-    res.render('index', { title:'Express');
+    res.render('index', { title:'Express'});
   }
 
   
