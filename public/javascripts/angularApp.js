@@ -11,13 +11,13 @@ function($stateProvider, $urlRouterProvider) {
       templateUrl: '/home.html',
       controller: 'MainCtrl',
        resolve: { //call function when appropriate, call here on resolve
-    postPromise: ['posts','auth', function(posts,auth){ //pass posts service
+    post: ['posts', function(posts){ //pass posts service
        
          //if user has logged in with google, set the local storage with google profile details
      // return posts.getAll();
     }]
   }, onEnter: ['auth', function(auth){
-    // auth.isGoogleUser();
+      auth.isGoogleUser();
   }]}).    
     
     /*
