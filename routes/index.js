@@ -272,20 +272,12 @@ router.get('/auth/google', passport.authenticate('google', { scope: [
 
 
 router.get('/auth/google/callback', 
-  //passport.authenticate('google', { successRedirect: '/',failureRedirect: '/login' }));
-
+  passport.authenticate('google', { successRedirect: '/',failureRedirect: '/login' }));
   //function(req, res) {
     // Successful authentication, redirect to index.ejs.
  // res.redirect('/');
  // });
- passport.authenticate('google',{ failureRedirect: '/login' },function(req, res) {
-  
-        res.writeHead(302, {
-                'Location': 'https://nikki-resource-stop.herokuapp.com/#/home?token=' + req.user.displayName
-            });
-        res.end();
-  
-    });
+
 
 
  router.get('/googleuser',function(req,res,next){
