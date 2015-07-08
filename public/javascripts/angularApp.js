@@ -10,16 +10,16 @@ function($stateProvider, $urlRouterProvider) {
       url: '/home',
       templateUrl: '/home.html',
       controller: 'MainCtrl',
-      // resolve: { //call function when appropriate, call here on resolve
-    //post: ['posts', function(posts){ //pass posts service
+       resolve: { //call function when appropriate, call here on resolve
+    post: ['posts', function(posts){ //pass posts service
        
          //if user has logged in with google, set the local storage with google profile details
-      //return posts.getAll();
-   // }]
-  //},
+       posts.getAll();
+   }]
+  },
    onEnter: ['auth','posts', function(auth,posts){
      // auth.isGoogleUser(); //used to check for permissions
-     // posts.getAll();
+      //posts.getAll();
   }]}).    
     
     /*
@@ -83,12 +83,14 @@ auth.isGoogleUser = function(){ //redirect to home and get googleuser details to
   $http.get('/googleuser').success(function(data){
     console.log(data.user);
    auth.user = data.user;
-  }).error(function(err){
-    //console.log(err);
   });
 };
 
 auth.getGoogleUser = function(){
+  $http.get('/googleuser').success(function(data){
+    console.log(data.user);
+   auth.user = data.user;
+  });
   return auth.user;
 }
 /*

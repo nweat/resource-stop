@@ -272,7 +272,7 @@ router.get('/auth/google', passport.authenticate('google', { scope: [
 
 
 router.get('/auth/google/callback', 
-  passport.authenticate('google', { successRedirect: '/home',failureRedirect: '/login' }));
+  passport.authenticate('google', { successRedirect: '#/home',failureRedirect: '/login' }));
   //function(req, res) {
     // Successful authentication, redirect to index.ejs.
  // res.redirect('/');
