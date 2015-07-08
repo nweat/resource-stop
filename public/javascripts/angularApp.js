@@ -18,7 +18,7 @@ function($stateProvider, $urlRouterProvider) {
    // }]
   //},
    onEnter: ['auth','posts', function(auth,posts){
-      auth.isGoogleUser(); //used to check for permissions
+     // auth.isGoogleUser(); //used to check for permissions
       posts.getAll();
   }]}).    
     
@@ -84,7 +84,7 @@ auth.isGoogleUser = function(){ //redirect to home and get googleuser details to
     console.log(data.user);
    auth.user = data.user;
   }).error(function(err){
-    console.log(err);
+    //console.log(err);
   });
 };
 
