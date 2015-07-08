@@ -215,7 +215,6 @@ router.post('/register', function(req, res, next){
     if(count == 0){ //if username doesnt already exist then save it
     user.save(function (err){
     if(err){ return next(err); }
-
     return res.json({token: user.generateJWT()}) //generate token for user and send back to front end for use
   });
     }
@@ -288,8 +287,6 @@ router.get('/auth/google/callback',
    return res.status(200).json({user: true});// res.status(200).json({token: true});
   }
   else{
-   // console.log('error:' + res.da);
-   //return next();
    return res.status(401).json({user: false});
   }
 

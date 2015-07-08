@@ -10,15 +10,16 @@ function($stateProvider, $urlRouterProvider) {
       url: '/home',
       templateUrl: '/home.html',
       controller: 'MainCtrl',
-      /* resolve: { //call function when appropriate, call here on resolve
-    post: ['posts', function(posts){ //pass posts service
+      // resolve: { //call function when appropriate, call here on resolve
+    //post: ['posts', function(posts){ //pass posts service
        
          //if user has logged in with google, set the local storage with google profile details
-     // return posts.getAll();
-    }]
-  }*/
-   onEnter: ['auth', function(auth){
-      auth.isGoogleUser();
+      //return posts.getAll();
+   // }]
+  //},
+   onEnter: ['auth','posts', function(auth,posts){
+      auth.isGoogleUser(); //used to check for permissions
+      posts.getAll();
   }]}).    
     
     /*
@@ -158,8 +159,6 @@ var o = {
 
 o.getAll = function() { //get posts
     return $http.get('/posts').success(function(data){
-      console.log('Data: '+data.title);
-      o.posts.push(data);
       angular.copy(data, o.posts); //copy returned results to posts object defined above, angular copy will make UI update properly when getAll function is called
     });
 };
@@ -169,9 +168,9 @@ o.checkToken = function(token){
   var _token = '';
 
   if(token != 'null'){
-    _token = token;
+    _token = token; //user is a google user
   }else{
-    _token = auth.getToken();
+    _token = auth.getToken(); //user is a local user
   }
 
   return _token;
@@ -303,14 +302,9 @@ function($scope, $state, auth, $location){
 
 app.controller('MainCtrl', ['$scope', 'posts', 'auth','ngDialog', function($scope, posts, auth, ngDialog){  //inject posts service
   
-  $scope.getPosts = function(){
-    return posts.getAll();
-  };
-  $scope.posts = $scope.getPosts();
+  //posts.getAll(); //was being done on resolve of /home route but was causing issues in google chrome
+  $scope.posts = posts.posts; //access posts array from o object in posts service
 
-
- // console.log('posts: '+posts.getAll());
-  //posts.posts; //access posts array from o object in posts service
   $scope.isLoggedIn = auth.isLoggedIn;
   var allowed = 'Nikki w';
 //console.log(posts.posts);
