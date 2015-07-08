@@ -266,7 +266,17 @@ router.get('/', function(req, res, next) {
 
   
 });
+    passport.serializeUser(function(user, done) {
+        done(null, user);
+    });
 
+    // used to deserialize the user
+    passport.deserializeUser(function(obj, done) {
+       /* User.findById(id, function(err, user) {
+            done(err, user);
+        });*/
+    done(null, obj);
+    });
 router.get('/auth/google', passport.authenticate('google', { scope: [
        'https://www.googleapis.com/auth/plus.login'], prompt: 'select_account'
 }));
