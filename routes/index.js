@@ -276,7 +276,9 @@ router.get('/auth/google/callback',
    return res.status(200).json({user: true});// res.status(200).json({token: true});
   }
   else{
-   return res.status(401).json({user: false});
+   // console.log('error:' + res.da);
+   return next();
+   //return res.status(401).json({user: false});
   }
 
  });

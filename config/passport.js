@@ -47,22 +47,23 @@ passport.deserializeUser(function(user, callback){
     });
 
     // used to deserialize the user
-    passport.deserializeUser(function(user, done) {
+    passport.deserializeUser(function(obj, done) {
        /* User.findById(id, function(err, user) {
             done(err, user);
         });*/
-    done(null, user);
+    done(null, obj);
     });
 
 //https://scotch.io/tutorials/easy-node-authentication-google
 passport.use(new GoogleStrategy({ //define Google strategy
   clientID: '591455568599-i2dotrcqunl8l1r51robprf7r5d6bhmv.apps.googleusercontent.com',
   clientSecret: 'eyjl4uRVVREM7IlHzvjOPfov',
-  callbackURL: "https://nikki-resource-stop.herokuapp.com/auth/google/callback"
+  callbackURL: "https://nikki-resource-stop.herokuapp.com/auth/google/callback",
+  passReqToCallback   : true
    // https://nikki-resource-stop.herokuapp.com/auth/google/callback
     //realm: 'http://localhost:3000/'
   },
- function(token, refreshToken, profile, done) {
+ function(token, accessToken,refreshToken, profile, done) {
     // asynchronous verification, for effect...
    // console.log(profile);
     process.nextTick(function () {
