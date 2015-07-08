@@ -159,6 +159,7 @@ var o = {
 o.getAll = function() { //get posts
     return $http.get('/posts').success(function(data){
       console.log('Data: '+data.title);
+      o.posts.push(data);
       angular.copy(data, o.posts); //copy returned results to posts object defined above, angular copy will make UI update properly when getAll function is called
     });
 };
