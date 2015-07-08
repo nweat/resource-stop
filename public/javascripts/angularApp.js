@@ -10,13 +10,14 @@ function($stateProvider, $urlRouterProvider) {
       url: '/home',
       templateUrl: '/home.html',
       controller: 'MainCtrl',
-       resolve: { //call function when appropriate, call here on resolve
+      /* resolve: { //call function when appropriate, call here on resolve
     post: ['posts', function(posts){ //pass posts service
        
          //if user has logged in with google, set the local storage with google profile details
      // return posts.getAll();
     }]
-  }, onEnter: ['auth', function(auth){
+  }*/
+   onEnter: ['auth', function(auth){
       auth.isGoogleUser();
   }]}).    
     
@@ -299,7 +300,8 @@ function($scope, $state, auth, $location){
 
 
 app.controller('MainCtrl', ['$scope', 'posts', 'auth','ngDialog', function($scope, posts, auth, ngDialog){  //inject posts service
-  $scope.posts = posts.posts; //access posts array from o object in posts service
+  $scope.posts = posts.getAll();
+  //posts.posts; //access posts array from o object in posts service
   $scope.isLoggedIn = auth.isLoggedIn;
   var allowed = 'Nikki w';
 //console.log(posts.posts);

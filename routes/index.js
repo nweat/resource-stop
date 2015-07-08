@@ -290,7 +290,7 @@ router.get('/auth/google/callback',
   else{
    // console.log('error:' + res.da);
    //return next();
-   return res.status(200).json({user: false});
+   return res.status(401).json({user: false});
   }
 
  });
