@@ -192,7 +192,7 @@ padding-right:10px;
 
       <ul class="nav navbar-nav navbar-right" ng-controller="NavCtrl">
       <li ng-show="isLoggedIn()"><a href=""><b>Welcome, {{currentUser()}} <img ng-src={{googleImage()}} width="25px;" height:"20px;"/> </b></b></a></li>
-      <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()"><b>Log Out</b></a></li>
+      <li ng-show="isLoggedIn()"><a href="/#/logout" ng-click="logOut()"><b>Log Out</b></a></li>
       <li ng-hide="isLoggedIn()"><a href="/#/login"><b>Log In</b></a></li>
       <li ng-hide="isLoggedIn()"><a href="/#/register"><b>Register</b></a></li>
       </ul>

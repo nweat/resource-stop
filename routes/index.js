@@ -202,6 +202,7 @@ router.post('/register', function(req, res, next){
   if(!req.body.username || !req.body.password){
     return res.status(400).json({message: 'Please fill out all fields'});
   }
+  console.log('register: '+req.body.username);
 
   var user = new User();
 
@@ -212,11 +213,11 @@ router.post('/register', function(req, res, next){
   User.count({'local.username': req.body.username}, function(err, count){ //check if user already exists
     if(err){ return next(err); }
 
-    if(count == 0){ //if username doesnt already exist then save it
+    if(count === 0){ //if username doesnt already exist then save it
     user.save(function (err){
     if(err){ return next(err); }
-
-    return res.json({token: user.generateJWT()}) //generate token for user and send back to front end for use
+  console.log('register: '+req.body.username);
+    return res.status(200).json({token: user.generateJWT()}) //generate token for user and send back to front end for use
   });
     }
    else{
@@ -256,8 +257,7 @@ router.post('/login', function(req, res, next){
 
 
 router.get('/auth/google', passport.authenticate('google', { scope: [
-       'https://www.googleapis.com/auth/plus.login',
-       'https://www.googleapis.com/auth/plus.profile.emails.read'] 
+       'https://www.googleapis.com/auth/plus.login'], prompt: 'select_account'
 }));
 
 
@@ -265,13 +265,17 @@ router.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect to index.ejs.
-  res.redirect('/');
+  res.writeHead(302, {
+                'Location': 'https://nikki-resource-stop.herokuapp.com/#/home?token=' + req.user.displayName
+            });
+  //res.status(200).json({token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url)});
+  res.end();
   });
 
 
 
  router.get('/googleuser',function(req,res,next){
- // console.log('results: ' + req.user.displayName+ req.user._json.image.url);
+  console.log('results: ' + req.user);
 
   if(req.user != undefined){
    return res.status(200).json({token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url)});
@@ -285,7 +289,6 @@ router.get('/auth/google/callback',
 
  router.get('/logout', function(req, res) {
         req.logout();
-        res.status(200);
         res.redirect('/');
  });
 
@@ -307,15 +310,15 @@ function isLoggedIn(req, res, next) {
     res.redirect('/');
 }
 
-function setjwtGoogle(id,username,image){
+function setjwtGoogle(id,usernamee,imagee){
   var today = new Date();
   var exp = new Date(today);
   exp.setDate(today.getDate() + 60);
 
   return jwt.sign({
     _id: id,
-    username: username,
-    image:image,
+    username: usernamee,
+    image:imagee,
     exp: parseInt(exp.getTime() / 1000),
   }, 'SECRET');
 }

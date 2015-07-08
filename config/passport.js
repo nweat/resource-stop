@@ -30,19 +30,8 @@ passport.use(new LocalStrategy( //must define strategy before use
   
 ));
 
-/*
-passport.serializeUser(function(user, callback){
-        console.log('serializing user.'+ user);
-        callback(null, user);
-    });
-
-passport.deserializeUser(function(user, callback){
-       console.log('deserialize user.');
-       callback(null, user);
-    });*/
-
- // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
+      console.log('serializing user.'+ user);
         done(null, user);
     });
 
@@ -51,14 +40,19 @@ passport.deserializeUser(function(user, callback){
        /* User.findById(id, function(err, user) {
             done(err, user);
         });*/
+     console.log('deserialize user.');
     done(null, user);
     });
+
+ // used to serialize the user for the session
+
 
 //https://scotch.io/tutorials/easy-node-authentication-google
 passport.use(new GoogleStrategy({ //define Google strategy
   clientID: '591455568599-i2dotrcqunl8l1r51robprf7r5d6bhmv.apps.googleusercontent.com',
   clientSecret: 'eyjl4uRVVREM7IlHzvjOPfov',
-  callbackURL: "https://nikki-resource-stop.herokuapp.com/auth/google/callback"
+  callbackURL: "https://nikki-resource-stop.herokuapp.com/auth/google/callback",
+  passReqToCallback   : true
    // returnURL: 'http://192.168.1.56:3000/auth/google/return',
     //realm: 'http://192.168.1.56:3000/'
   },

@@ -12,13 +12,12 @@ function($stateProvider, $urlRouterProvider) {
       controller: 'MainCtrl',
        resolve: { //call function when appropriate, call here on resolve
     postPromise: ['posts','auth', function(posts,auth){ //pass posts service
-      auth.isGoogleUser(); 
+     // if(!auth.isLoggedIn()) {auth.isGoogleUser(); }
      //if user has logged in with google, set the local storage with google profile details
       return posts.getAll();
     }]
-  }, onEnter: ['auth', function(auth){
-      auth.isGoogleUser(); 
-  }]}).    
+  }
+}).    
     
     /*
      * 
@@ -75,7 +74,7 @@ auth.getToken = function (){
 
 //logged in with google
 auth.isGoogleUser = function(){ //redirect to home and get googleuser details to show in nav ctrl
- $http.get('googleuser').success(function(data){
+ $http.get('/googleuser').success(function(data){
   if(data.token != false){
    auth.saveToken(data.token);
   }
@@ -139,10 +138,10 @@ auth.logIn = function(user){
 
 
 auth.logOut = function(){ //call server side as well if using google
-   $http.get('logout').success(function(){ 
-    $window.localStorage.removeItem('flapper-news-token');
-  });
- // $window.localStorage.removeItem('flapper-news-token');
+   $http.get('/logout').success(function(){ 
+    //$window.localStorage.removeItem('flapper-news-token');
+  })
+ $window.localStorage.removeItem('flapper-news-token');
 };
 
   return auth;
