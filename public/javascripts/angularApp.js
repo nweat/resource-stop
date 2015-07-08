@@ -19,7 +19,7 @@ function($stateProvider, $urlRouterProvider) {
   //},
    onEnter: ['auth','posts', function(auth,posts){
      // auth.isGoogleUser(); //used to check for permissions
-      posts.getAll();
+     // posts.getAll();
   }]}).    
     
     /*
