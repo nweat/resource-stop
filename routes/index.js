@@ -293,7 +293,7 @@ router.get('/auth/google/callback',
   
     })(req,res,next);
 
-);
+
  router.get('/googleuser',function(req,res,next){
  // console.log('results: ' + req.user.displayName+ req.user._json.image.url);
 
