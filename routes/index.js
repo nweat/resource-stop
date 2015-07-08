@@ -253,7 +253,19 @@ router.post('/login', function(req, res, next){
 });
 
 
+/* GET home page. */
+router.get('/', function(req, res, next) {
+   var googletoken = '';
 
+  if(req.user){
+    res.render('index', { user: req.user, token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url) })
+    }
+  else{
+    res.render('index', { user: false, token: false});
+  }
+
+  
+});
 
 router.get('/auth/google', passport.authenticate('google', { scope: [
        'https://www.googleapis.com/auth/plus.login'], prompt: 'select_account'
@@ -277,8 +289,8 @@ router.get('/auth/google/callback',
   }
   else{
    // console.log('error:' + res.da);
-   return next();
-   //return res.status(401).json({user: false});
+   //return next();
+   return res.status(200).json({user: false});
   }
 
  });
@@ -290,19 +302,7 @@ router.get('/auth/google/callback',
  });
 
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-   var googletoken = '';
 
-  if(req.user){
-    res.render('index', { user: req.user, token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url) })
-    }
-  else{
-    res.render('index', { user: false, token: false});
-  }
-
-  
-});
 
 
 // route middleware to make sure a user is logged in
