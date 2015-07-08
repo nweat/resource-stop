@@ -36,12 +36,16 @@ passport.use(new LocalStrategy( //must define strategy before use
     });
 
     // used to deserialize the user
-    passport.deserializeUser(function(user, done) {
+    passport.deserializeUser(function(obj, done) {
        /* User.findById(id, function(err, user) {
             done(err, user);
         });*/
+<<<<<<< HEAD
      console.log('deserialize user.');
     done(null, user);
+=======
+    done(null, obj);
+>>>>>>> ab5090418a2df41b2f7174a56ef9f6b023aeed78
     });
 
  // used to serialize the user for the session
@@ -53,10 +57,15 @@ passport.use(new GoogleStrategy({ //define Google strategy
   clientSecret: 'eyjl4uRVVREM7IlHzvjOPfov',
   callbackURL: "https://nikki-resource-stop.herokuapp.com/auth/google/callback",
   passReqToCallback   : true
+<<<<<<< HEAD
    // returnURL: 'http://192.168.1.56:3000/auth/google/return',
     //realm: 'http://192.168.1.56:3000/'
+=======
+   // https://nikki-resource-stop.herokuapp.com/auth/google/callback
+    //realm: 'http://localhost:3000/'
+>>>>>>> ab5090418a2df41b2f7174a56ef9f6b023aeed78
   },
- function(token, refreshToken, profile, done) {
+ function(token, accessToken,refreshToken, profile, done) {
     // asynchronous verification, for effect...
    // console.log(profile);
     process.nextTick(function () {

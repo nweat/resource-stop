@@ -179,7 +179,6 @@ padding-right:10px;
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="navbar">
   
-
       <form class="navbar-form navbar-left" role="search">
       <!--  <div class="form-group">
           <input type="text" class="form-control" style="border:1px solid green;border-radius:100px;" ng-model="query" placeholder="Filter resources">
@@ -191,10 +190,59 @@ padding-right:10px;
  <div class="collapse navbar-collapse" id="navbar-main">
 
       <ul class="nav navbar-nav navbar-right" ng-controller="NavCtrl">
+<<<<<<< HEAD
       <li ng-show="isLoggedIn()"><a href=""><b>Welcome, {{currentUser()}} <img ng-src={{googleImage()}} width="25px;" height:"20px;"/> </b></b></a></li>
       <li ng-show="isLoggedIn()"><a href="/#/logout" ng-click="logOut()"><b>Log Out</b></a></li>
       <li ng-hide="isLoggedIn()"><a href="/#/login"><b>Log In</b></a></li>
       <li ng-hide="isLoggedIn()"><a href="/#/register"><b>Register</b></a></li>
+=======
+
+       <li  
+       <% if (user) { %>
+        ng-show='true';
+       <% } %>  
+        ng-show="isLoggedIn()"><a href=""><b>
+         <% if (user) { %>
+         Welcome, <%= user.displayName %> <img src= <%= user._json.image.url %> width="25px;" height:"20px;"/> 
+         <% } else { %>
+           Welcome, {{currentUser()}}
+         <% } %>
+         </b></a>
+      </li>
+
+
+      <li  
+       <% if (user) { %>
+        ng-show='true'
+       <% } %>  
+        ng-show="isLoggedIn()">
+        <a 
+         <% if (user) { %>
+          href="/logout"
+         <% } %> 
+         href="" ng-click="logOut()"><b>Log Out</b></a>
+      </li>
+
+      
+      <!--if logged in as google user hide login, if reg user check token if logged in -->
+      <li  
+       <% if (user) { %>
+        ng-hide='true'
+       <% } %>  
+        ng-hide="isLoggedIn()"><a href="/#/login"><b>Log In</b></a>
+      </li>
+
+
+      <li  
+       <% if (user) { %>
+        ng-hide='true'
+       <% } %>  
+        ng-hide="isLoggedIn()"><a href="/#/register"><b>Register</b></a>
+      </li>
+
+
+
+>>>>>>> ab5090418a2df41b2f7174a56ef9f6b023aeed78
       </ul>
          </div>
     </div><!-- /.navbar-collapse -->
@@ -221,7 +269,7 @@ padding-right:10px;
 <div class="transparent-background-inner">
   <div ng-show="error" class="alert-danger-custom">
     <span>{{ error.message }}</span>
-  </div>
+</div>
 
   <form ng-submit="register()">
     <h3>Register</h3>
@@ -279,37 +327,52 @@ padding-right:10px;
 
 
 
-<!--=====================================================================================================MAIN-->
-<script type="text/ng-template" id="/home.html">
 
-<div class="alert alert-transparent" role="alert" ng-show="isLoggedIn()">
+<!--=====================================================================================================MAIN-->
+<script type="text/ng-template" id="/home.html" ng-init="
+ <% if (user) { %>
+ googleuser='<%- user.displayName %>';
+ googletoken='<%- token %>';
+ <% } else { %>
+ googleuser='null';
+ googletoken='null';
+ <% } %>
+">
+
+
+<div class="alert alert-transparent" role="alert"  
+<% if (user) { %> ng-show='true'<% } %> ng-show="isLoggedIn()">
 </div>
 
-<button ng-click="modal()" ng-show="isLoggedIn()" class="btn btn-primary btn-block addnewButton"><b>ADD NEW RESOURCE</b></button>   
+<button ng-click="modal(googleuser,false)" <% if (user) { %> ng-show='true'<% } %> ng-show="isLoggedIn()" class="btn btn-primary btn-block addnewButton"><b>ADD NEW RESOURCE</b></button> 
+
 <input type="text" class="form-control" id="filter" style="border:1px solid #337ab7;border-radius:100px;" ng-model="query" placeholder="Filter resources"><br>
 
-<ul ng-repeat="post in posts | filter:query  |orderBy:'-upvotes'" class="resource animate">
+<ul ng-repeat="post in posts | filter:query | orderBy:'-upvotes'" class="resource animate">
 <li> 
-<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span> {{post.upvotes}}  
+<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post,googletoken)"></span> {{post.upvotes}}  
 <span style="font-size:14px; margin-left:8px;color:purple;"><a ng-show="post.link" style="color:purple;text-transform:uppercase;font-weight:bold;" href="{{post.link}}" target="_blank">{{post.title}}</a> </span>
 <span style="font-size:11px;">posted by {{post.author}} </span>
 
-<span style="float:right;padding:1px;" ng-show="isLoggedIn()">
-<span class="glyphicon glyphicon-pencil rightLinks" aria-hidden="true" ng-click="modal(post)"></span>
-<a href="#/posts/{{post._id}}"><span class="glyphicon glyphicon-comment rightLinks" aria-hidden="true"></span></a>
-<span class="glyphicon glyphicon-remove rightLinks" aria-hidden="true" ng-click="delete(post)"></span>
+<span style="float:right;padding:1px;" <% if (user) { %> ng-show='true'<% } %> ng-show="isLoggedIn()">
+<span class="glyphicon glyphicon-pencil rightLinks" aria-hidden="true" ng-click="modal(googleuser,post)"></span>
+<!--<a href="#/posts/{{post._id}}"><span class="glyphicon glyphicon-comment rightLinks" aria-hidden="true"></span></a>-->
+<span class="glyphicon glyphicon-remove rightLinks" aria-hidden="true" ng-click="delete(post,googleuser,googletoken)"></span>
 </span>
 </li>
 </ul>
 
-<div ng-hide="isLoggedIn()">
+<div <% if (user) { %> ng-hide='true'<% } %> ng-hide="isLoggedIn()">
 <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a resource</h3>
 </div>
+
+
+
 </script>
 <!--=====================================================================================================NEW POST-->
 
 <script type="text/ng-template" id="newPost.html">
-    <form ng-submit="addPost()" ng-show="isLoggedIn()">
+    <form ng-submit="addPost(googletoken)" <% if (user) { %> ng-show='true'<% } %> ng-show="isLoggedIn()">
         <h3>New resource</h3>
 
   <span ng-show="status" class="alert-danger">{{ status.message }}</span>
@@ -350,7 +413,7 @@ padding-right:10px;
 
 <!--=====================================================================================================EDIT POST-->
 <script type="text/ng-template" id="editPost.html">
-    <form ng-submit="editPost(ngDialogData)" ng-show="isLoggedIn()">
+    <form ng-submit="editPost(ngDialogData,googletoken)" <% if (user) { %> ng-show='true'<% } %> ng-show="isLoggedIn()">
         <h3>Update resource</h3>
 
 
@@ -424,7 +487,7 @@ Hey dude, you are not authorized!
     </span>
   </div>
   
-    <form ng-submit="addComment()" ng-show="isLoggedIn()"
+    <form ng-submit="addComment()" <% if (user) { %> ng-show='true'<% } %> ng-show="isLoggedIn()"
     style="margin-top:30px;">
     <h3>Add a new comment</h3>
 
@@ -437,7 +500,7 @@ Hey dude, you are not authorized!
     <button type="submit" class="btn btn-primary">Post</button>
   </form>
   
-  <div ng-hide="isLoggedIn()">
+  <div <% if (user) { %> ng-hide='true'<% } %>  ng-hide="isLoggedIn()">
   <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can comment.</h3>
   </div>
   
