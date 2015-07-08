@@ -158,7 +158,7 @@ var o = {
 
 o.getAll = function() { //get posts
     return $http.get('/posts').success(function(data){
-      console.log('Data: '+data);
+      console.log('Data: '+data.title);
       angular.copy(data, o.posts); //copy returned results to posts object defined above, angular copy will make UI update properly when getAll function is called
     });
 };
@@ -301,8 +301,14 @@ function($scope, $state, auth, $location){
 
 
 app.controller('MainCtrl', ['$scope', 'posts', 'auth','ngDialog', function($scope, posts, auth, ngDialog){  //inject posts service
-  $scope.posts = posts.getAll();
-  console.log('posts: '+posts.getAll());
+  
+  $scope.getPosts = function(){
+    return posts.getAll();
+  };
+  $scope.posts = $scope.getPosts();
+
+
+ // console.log('posts: '+posts.getAll());
   //posts.posts; //access posts array from o object in posts service
   $scope.isLoggedIn = auth.isLoggedIn;
   var allowed = 'Nikki w';
