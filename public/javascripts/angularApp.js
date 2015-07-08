@@ -17,7 +17,7 @@ function($stateProvider, $urlRouterProvider) {
       return posts.getAll();
     }]
   }, onEnter: ['auth', function(auth){
-     auth.isGoogleUser();
+    // auth.isGoogleUser();
   }]}).    
     
     /*

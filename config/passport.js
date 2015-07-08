@@ -42,7 +42,17 @@ passport.deserializeUser(function(user, callback){
     });*/
 
  // used to serialize the user for the session
+    passport.serializeUser(function(user, done) {
+        done(null, user);
+    });
 
+    // used to deserialize the user
+    passport.deserializeUser(function(obj, done) {
+       /* User.findById(id, function(err, user) {
+            done(err, user);
+        });*/
+    done(null, obj);
+    });
 
 //https://scotch.io/tutorials/easy-node-authentication-google
 passport.use(new GoogleStrategy({ //define Google strategy
