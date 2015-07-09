@@ -274,6 +274,12 @@ router.get('/auth/google/callback',
 
  router.get('/googleuser',function(req,res,next){
   //console.log('results: ' + req.user);
+  var name = '';
+ if(req.user.displayName){
+  name = req.user.displayName
+ }else{
+  name = req.user._json.email;
+ }
 
   if(req.user){
    return res.status(200).json({token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url)});
