@@ -51,6 +51,7 @@ UserSchema.methods.generateJWT = function() { //generate a JWT token for the use
   return jwt.sign({
     _id: this.local._id,
     username: this.local.username,
+    image:null,
     exp: parseInt(exp.getTime() / 1000),
   }, 'SECRET');
 };

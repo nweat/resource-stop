@@ -254,8 +254,6 @@ router.post('/login', function(req, res, next){
 });
 
 
-
-
 router.get('/auth/google', passport.authenticate('google', { scope: [
        'https://www.googleapis.com/auth/plus.login'], prompt: 'select_account'
 }));
@@ -264,25 +262,22 @@ router.get('/auth/google', passport.authenticate('google', { scope: [
 router.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    // Successful authentication, redirect to index.ejs.
-  res.writeHead(302, {
-                'Location': 'https://nikki-resource-stop.herokuapp.com/#/home?token=' + req.user.displayName
-            });
-  //res.status(200).json({token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url)});
+    // Successful authentication,
+  res.writeHead(302, {'Location': 'http://localhost:3000/#/home'});
   res.end();
   });
 
 
 
  router.get('/googleuser',function(req,res,next){
-  console.log('results: ' + req.user);
+  //console.log('results: ' + req.user);
 
-  if(req.user != undefined){
+  if(req.user){
    return res.status(200).json({token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url)});
   }
-  else{
-   return res.status(200).json({token: false});
-  }
+ // else{
+ //  return res.status(401).json({token: false});
+ // }
 
  });
 
