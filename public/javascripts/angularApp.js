@@ -14,7 +14,7 @@ function($stateProvider, $urlRouterProvider) {
     postPromise: ['posts', function(posts){ //pass posts service
      // if(!auth.isLoggedIn()) {auth.isGoogleUser(); }
      //if user has logged in with google, set the local storage with google profile details
-      return posts.getAll();
+       posts.getAll();
     }]
   }
 }).    
