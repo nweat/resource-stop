@@ -11,10 +11,11 @@ function($stateProvider, $urlRouterProvider) {
       templateUrl: '/home.html',
       controller: 'MainCtrl',
        resolve: { //call function when appropriate, call here on resolve
-    postPromise: ['posts', function(posts){ //pass posts service
+    postPromise: ['posts','auth', function(posts,auth){ //pass posts service
      // if(!auth.isLoggedIn()) {auth.isGoogleUser(); }
      //if user has logged in with google, set the local storage with google profile details
        posts.getAll();
+        auth.isGoogleUser();
     }]
   }
 }).    
@@ -296,7 +297,7 @@ app.controller('MainCtrl', ['$scope', 'posts', 'auth','ngDialog','$location', fu
   var allowed = 'Nikki w';
 //console.log(posts.posts);
  
- auth.isGoogleUser();
+
 
 //$location.search().user;
 
