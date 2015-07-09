@@ -263,6 +263,9 @@ router.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication,
+     if(!req) {
+            return res.redirect('/login');
+        }
   res.writeHead(302, {'Location': 'https://nikki-resource-stop.herokuapp.com/#/home'});
   res.end();
   });
