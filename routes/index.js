@@ -276,10 +276,10 @@ router.get('/auth/google/callback',
  router.get('/googleuser',function(req,res,next){
   //console.log('results: ' + req.user);
   var name = '';
- if(req.user.displayName){
+ if(req.user.displayName!=''){
   name = req.user.displayName
  }else{
-  name = req.user._json.email;
+  name = req.user.email;
  }
 
   if(req.user){
