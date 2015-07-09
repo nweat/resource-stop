@@ -282,7 +282,7 @@ router.get('/auth/google/callback',
  }
 
   if(req.user){
-   return res.status(200).json({token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url)});
+   return res.status(200).json({token: setjwtGoogle(req.user.id,name,req.user._json.image.url)});
   }
   else{
    return res.status(401).json({token: false});

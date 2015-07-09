@@ -58,7 +58,7 @@ passport.use(new GoogleStrategy({ //define Google strategy
   },
  function(token, accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
-  // console.log(profile);
+   console.log(profile);
     process.nextTick(function () {
      
  
