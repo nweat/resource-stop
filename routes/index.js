@@ -263,7 +263,7 @@ router.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication,
-  res.writeHead(200, {'Location': 'https://resource-stop.herokuapp.com/#/home'});
+  res.writeHead(302, {'Location': 'https://resource-stop.herokuapp.com/#/home'});
   res.end();
   });
 
@@ -275,9 +275,9 @@ router.get('/auth/google/callback',
   if(req.user){
    return res.status(200).json({token: setjwtGoogle(req.user.id,req.user.displayName,req.user._json.image.url)});
   }
- // else{
- //  return res.status(401).json({token: false});
- // }
+  else{
+   return res.status(401).json({token: false});
+  }
 
  });
 
