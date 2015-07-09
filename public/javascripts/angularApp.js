@@ -66,7 +66,7 @@ var auth = {};
 
 auth.saveToken = function (token){
   if(localStorage.getItem('flapper-news-token') == null){
-  $window.localStorage['flapper-news-token'] = token;
+    $window.localStorage['flapper-news-token'] = token;
   }
 };
 
