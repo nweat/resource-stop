@@ -263,7 +263,7 @@ router.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication,
-  res.writeHead(302, {'Location': 'https://resource-stop.herokuapp.com/#/home'});
+  res.writeHead(200, {'Location': 'https://resource-stop.herokuapp.com/#/home'});
   res.end();
   });
 

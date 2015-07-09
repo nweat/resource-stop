@@ -51,12 +51,11 @@ passport.use(new LocalStrategy( //must define strategy before use
 passport.use(new GoogleStrategy({ //define Google strategy
   clientID: '591455568599-i2dotrcqunl8l1r51robprf7r5d6bhmv.apps.googleusercontent.com',
   clientSecret: 'eyjl4uRVVREM7IlHzvjOPfov',
-  callbackURL: "https://resource-stop.herokuapp.com/auth/google/callback",
-  passReqToCallback   : true
+  callbackURL: "https://resource-stop.herokuapp.com/auth/google/callback"
   //https://nikki-resource-stop.herokuapp.com
  
   },
- function(token, refreshToken, profile, done) {
+ function(token, accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
    //console.log(profile);
     process.nextTick(function () {
