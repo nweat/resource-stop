@@ -10,13 +10,13 @@ function($stateProvider, $urlRouterProvider) {
       url: '/home',
       templateUrl: '/home.html',
       controller: 'MainCtrl',
-       //resolve: { //call function when appropriate, call here on resolve
-    //postPromise: ['posts', function(posts){ //pass posts service
+       resolve: { //call function when appropriate, call here on resolve
+    postPromise: ['posts', function(posts){ //pass posts service
      // if(!auth.isLoggedIn()) {auth.isGoogleUser(); }
      //if user has logged in with google, set the local storage with google profile details
-      // posts.getAll();
-    //}]
-  //}
+       posts.getAll();
+    }]
+  }
 }).    
     
     /*
@@ -290,7 +290,7 @@ function($scope, $state, auth, $location){
 
 
 app.controller('MainCtrl', ['$scope', 'posts', 'auth','ngDialog','$location', function($scope, posts, auth, ngDialog,$location){  //inject posts service
-  posts.getAll();
+ // posts.getAll();
   $scope.posts = posts.posts; //access posts array from o object in posts service
   $scope.isLoggedIn = auth.isLoggedIn;
   var allowed = 'Nikki w';
