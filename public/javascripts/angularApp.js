@@ -294,7 +294,7 @@ app.controller('MainCtrl', ['$scope', 'posts', 'auth','ngDialog','$location', fu
  // posts.getAll();
   $scope.posts = posts.posts; //access posts array from o object in posts service
   $scope.isLoggedIn = auth.isLoggedIn;
-  var allowed = 'Nikki w';
+  var allowed = 'Nikki G';
 //console.log(posts.posts);
  
 
