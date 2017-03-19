@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Nikki's Resource Stop</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
     <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog.css">
@@ -19,7 +20,7 @@
 body{
    /* min-height: 2000px;*/
     padding-top: 60px;
-    background-image : url('http://www.bestinspired.com/wp-content/uploads/2015/04/nature-images.jpg');
+    /*background-image : url('http://www.bestinspired.com/wp-content/uploads/2015/04/nature-images.jpg');*/
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center top;
@@ -32,7 +33,7 @@ body{
 }
 
 .navbar-default .navbar-nav>li>a {
-  color: white; 
+  /*color: white; */
   font-size: 16px;
 }
 .navbar-default .navbar-nav>li>a:hover{
@@ -168,47 +169,33 @@ padding-right:10px;
   
 <body ng-app="flapperNews">
 
-<nav class="navbar navbar-default navbar-fixed-top"> 
-  <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header" style="margin-top:10px;">
-      <a href="#" style="position:relative;font-family: 'Orbitron', sans-serif;color:#4B0082;font-size:20px;right:-60px;"> Resource STOP</a>
-       <br>
-       <span class="icon-bar"><i>"Compilation of <a href="mailto:nikkiweat@gmail.com">nikki's</a> top online IT Resources"</i></span>
-    </div>
+<div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right" ng-controller="NavCtrl">
+            <li role="presentation" ng-show="isLoggedIn()"><a href=""><b>Welcome, {{currentUser()}} <img src={{googleImage()}} alt="" width="25px;" height:"20px;" style="border-radius:50px;"/> </b></b></a></li>
+            <li role="presentation" ng-show="isLoggedIn()"><a href="/#/logout" ng-click="logOut()"><b>Log Out</b></a></li>
+            <li role="presentation"><a href="#">About</a></li>
+            <li role="presentation"><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted"><a href="#" style="position:relative;font-family: 'Orbitron', sans-serif;color:#4B0082;font-size:20px;right:-60px;"> Resource STOP</a></h3>
+      </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="navbar">
-  
+      <div class="row marketing">
+        <ui-view></ui-view>
+      </div>
 
-      <form class="navbar-form navbar-left" role="search">
-      <!--  <div class="form-group">
-          <input type="text" class="form-control" style="border:1px solid green;border-radius:100px;" ng-model="query" placeholder="Filter resources">
-        </div-->
-   
-      </form>
-
-
- <div class="collapse navbar-collapse" id="navbar-main">
-
-      <ul class="nav navbar-nav navbar-right" ng-controller="NavCtrl">
-      <li ng-show="isLoggedIn()"><a href=""><b>Welcome, {{currentUser()}} <img src={{googleImage()}} alt="" width="25px;" height:"20px;" style="border-radius:50px;"/> </b></b></a></li>
-      <li ng-show="isLoggedIn()"><a href="/#/logout" ng-click="logOut()"><b>Log Out</b></a></li>
-      <li ng-hide="isLoggedIn()"><a href="/#/login"><b>Log In</b></a></li>
-      <li ng-hide="isLoggedIn()"><a href="/#/register"><b>Register</b></a></li>
-      </ul>
-         </div>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+      <footer class="footer">
+        <p>&copy; 2016 Company, Inc.</p>
+      </footer>
+</div> <!-- /container -->
 
 
-	
-  <div class="container">
-    <div class="col-md-6 col-md-offset-3">
-      <ui-view></ui-view>
-    </div>
-  </div>
+
+
+
+
 
 </body>
 
