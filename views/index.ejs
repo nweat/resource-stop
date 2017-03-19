@@ -175,19 +175,19 @@ padding-right:10px;
           <ul class="nav nav-pills pull-right" ng-controller="NavCtrl">
             <li role="presentation" ng-show="isLoggedIn()"><a href=""><b>Welcome, {{currentUser()}} <img src={{googleImage()}} alt="" width="25px;" height:"20px;" style="border-radius:50px;"/> </b></b></a></li>
             <li role="presentation" ng-show="isLoggedIn()"><a href="/#/logout" ng-click="logOut()"><b>Log Out</b></a></li>
-            <li role="presentation"><a href="#">About</a></li>
-            <li role="presentation"><a href="#">Contact</a></li>
+            <li role="presentation" ng-hide="isLoggedIn()"><a href="/#/login"><b>Log In</b></a></li>
+            <li role="presentation" ng-hide="isLoggedIn()"><a href="/#/register"><b>Register</b></a></li>
           </ul>
         </nav>
-        <h3 class="text-muted"><a href="#" style="position:relative;font-family: 'Orbitron', sans-serif;color:#4B0082;font-size:20px;right:-60px;"> Resource STOP</a></h3>
+        <h3 class="text-muted"><a href="#" style="font-family: 'Orbitron', sans-serif;color:#4B0082;font-size:20px;"> Resource STOP</a></h3>
       </div>
 
-      <div class="row marketing">
+      <div class="row">
         <ui-view></ui-view>
       </div>
 
       <footer class="footer">
-        <p>&copy; 2016 Company, Inc.</p>
+        <p><i>"Compilation of <a href="mailto:nikkiweat@gmail.com">nikki's</a> top online IT Resources"</i></p>
       </footer>
 </div> <!-- /container -->
 
