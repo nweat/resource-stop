@@ -19,12 +19,13 @@
 }
 body{
    /* min-height: 2000px;*/
-    padding-top: 60px;
+    /*padding-top: 60px;*/
     /*background-image : url('http://www.bestinspired.com/wp-content/uploads/2015/04/nature-images.jpg');*/
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center top;
     background-color: #F0F8FF;
+    font-size: 15px;
 
 }
 .navbar-default {
@@ -179,7 +180,7 @@ padding-right:10px;
             <li role="presentation" ng-hide="isLoggedIn()"><a href="/#/register"><b>Register</b></a></li>
           </ul>
         </nav>
-        <h3 class="text-muted"><a href="#" style="font-family: 'Orbitron', sans-serif;color:#4B0082;"> Resource STOP</a></h3>
+        <h3 class="text-muted"><a href="#" style="font-family: 'Orbitron', sans-serif;color:#4B0082;font-size: 1em"> Resource STOP</a></h3>
       </div>
 
       <div class="row">
@@ -270,8 +271,8 @@ padding-right:10px;
 <!--=====================================================================================================MAIN-->
 <script type="text/ng-template" id="/home.html">
 
-<div class="alert alert-transparent" role="alert" ng-show="isLoggedIn()">
-<p class="btn btn-primary" ng-click="modal()" ng-show="isLoggedIn()">ADD NEW RESOURCE</p>
+<div class="alert alert-success" role="alert" ng-show="isLoggedIn()">
+<p class="btn btn-primary btn-block" ng-click="modal()" ng-show="isLoggedIn()">ADD NEW RESOURCE</p>
 <!--<button ng-click="modal()" ng-show="isLoggedIn()" class="btn btn-primary btn-block"><b>ADD NEW RESOURCE</b></button> -->
 </div>
 
