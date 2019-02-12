@@ -1,4 +1,0 @@
-http://futurestud.io/blog/how-to-install-mongodb-2-6-on-ubuntudebian/
-
-NODE vids:
-https://www.youtube.com/watch?v=pU9Q6oiQNd0
